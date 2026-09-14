@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium URL Shortener</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+.hero-gradient {
+background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #6366f1 100%);
+}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+<!-- Main Container Card -->
+<div class="max-w-6xl mx-auto w-full bg-white shadow-xl my-8 rounded-2xl overflow-hidden flex flex-col">
+<!-- Navbar & Hero Section -->
+<header class="hero-gradient text-white px-8 pt-6 pb-28 relative">
+<!-- Nav -->
+<nav class="flex justify-between items-center mb-16">
+<div class="font-bold text-lg tracking-wide">Premium URL Shortener</div>
+<div class="space-x-6 text-sm flex items-center">
+<a href="#" class="hover:opacity-80">Pricing</a>
+<a href="#" class="hover:opacity-80">Login</a>
+<a href="#" class="bg-white text-blue-600 px-5 py-2 rounded-full font-medium shadow hover:bg-gray-100 transition">Get Started</a>
+</div>
+</nav>
+<!-- Hero Heading -->
+<div class="text-center">
+<h1 class="text-3xl md:text-4xl font-extrabold mb-8 tracking-tight">Premium URL Shortener</h1>
+</div>
+<!-- URL Shortener Box (Floating over the gradient curve) -->
+<div class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-4 text-gray-800 relative z-10 translate-y-12">
+<form method="POST" action="">
+{% csrf_token %}
+<!-- Top Input Row -->
+<div class="flex items-center bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 mb-3">
+<svg class="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+</svg>
+<input type="url" name="long_url" placeholder="Paste a long url" required class="w-full bg-transparent focus:outline-none text-gray-700 placeholder-gray-400">
+<button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-lg shadow transition ml-3">Shorten</button>
+</div>
+<!-- Advanced Options Row -->
+<div class="flex justify-between items-center text-sm px-1">
+<button type="button" class="text-gray-500 hover:text-gray-700 font-medium">Advanced Options</button>
+<select class="bg-gray-100 border border-gray-300 rounded px-3 py-1 text-gray-600 focus:outline-none">
+<option>bit.ly/3x</option>
+</select>
+</div>
+</form>
+<!-- Display Result if available -->
+
+<!-- Display Result if available -->
+{% if short_url %}
+<div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+    <div class="flex items-center justify-between mb-3">
+        <div>
+            <span class="text-xs text-blue-600 font-bold uppercase tracking-wider">Your Short Link</span>
+            <p class="text-blue-900 font-semibold"><a href="{{ short_url }}" target="_blank">{{ short_url }}</a></p>
+        </div>
+        
+        <!-- Copy Button -->
+        <button onclick="navigator.clipboard.writeText('{{ short_url }}'); alert('Copied to clipboard!');" class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 transition">Copy</button>
+    </div>
+
+    <!-- Additional API Features Row (QR Code & Safety Badge) -->
+    <div class="border-t border-blue-200 pt-3 flex items-center justify-between text-xs">
+        <!-- Safety Status Badge -->
+        <div class="flex items-center gap-2">
+            <span class="font-semibold text-gray-600">Link Safety:</span>
+            {% if safety_status == "Safe & Secure" %}
+                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">✓ Safe & Secure</span>
+            {% else %}
+                <span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">⚠ {{ safety_status }}</span>
+            {% endif %}
+        </div>
+
+        <!-- QR Code Preview -->
+        {% if qr_code_url %}
+        <div class="flex items-center gap-2">
+            <span class="text-gray-500">QR Code:</span>
+            <img src="{{ qr_code_url }}" alt="QR Code" class="w-10 h-10 rounded border bg-white p-0.5 shadow-sm">
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+
+</div>
+</header>
+<!-- Content Spacer for floating box -->
+<div class="pt-24 pb-16 px-6 text-center">
+<h2 class="text-2xl font-bold mb-3">One short link, infinite possibilities.</h2>
+<p class="text-gray-500 max-w-xl mx-auto text-sm mb-12">
+A short link is a powerful marketing tool when you use it carefully. It is not just a link, but a medium between your customer and their destination. A short link allows you to collect so much data about your customers and their behaviors.
+</p>
+<!-- Feature Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
+<!-- Card 1 -->
+<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition text-left flex flex-col justify-between">
+<div>
+<div class="text-blue-600 font-semibold text-sm mb-2 flex items-center gap-2">
+<span>✦</span> Target. Re-target.
+</div>
+<p class="text-gray-500 text-xs leading-relaxed">
+Target your customers to increase your reach and redirect them to a relevant page. Add a pixel to retarget them in your social media ad campaign to capture them.
+</p>
+</div>
+</div>
+<!-- Card 2 (Highlighted Blue) -->
+<div class="bg-blue-600 text-white rounded-xl p-6 shadow-lg text-left flex flex-col justify-between">
+<div>
+<div class="font-semibold text-sm mb-2 flex items-center gap-2">
+<span>⚡</span> Measure. Optimize.
+</div>
+<p class="text-blue-100 text-xs leading-relaxed">
+Share your links to your network and measure data to optimize your marketing campaign's performance. Reach an audience that fit your needs.
+</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition text-left flex flex-col justify-between">
+<div>
+<div class="text-blue-600 font-semibold text-sm mb-2 flex items-center gap-2">
+<span>📈</span> Perfect for sales & marketing
+</div>
+<p class="text-gray-500 text-xs leading-relaxed">
+Understanding your users and customers will help you increase your conversion. Our system allows you to track everything. Whether it is the amount of clicks, the country or the referrer, the data is data for you to analyze it.
+</p>
+</div>
+</div>
+</div>
+<!-- Bottom CTA -->
+<div class="mb-6">
+<a href="#" class="bg-blue-900 hover:bg-blue-800 text-white font-medium px-8 py-3 rounded-full shadow transition inline-block">Create an account</a>
+<p class="text-gray-400 text-xs mt-2">Free for free. Upgrade later - No credit card required</p>
+</div>
+</div>
+</div>
+<footer> made by Tino @ 2026 </footer>
+</body>
+</html>
